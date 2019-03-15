@@ -20,12 +20,12 @@ const apiKey = ""
 weather
   .setAPI({ key: apiKey})
   .setPosition({city:"Argentan", countryCode: 'fr'})
-  .setUnit(Weather.UNIT.CELSIUS)
+  .setTemperatureUnit(Weather.UNIT.TEMPERATURE.CELSIUS)
+  .setSpeedUnit(Weather.UNIT.SPEED.KMETER_HOUR)
   .setMode(Weather.MODE.WEATHER)
   .setLang(Weather.LANG.FR)
-  .get()
-  .then( data => {
-    console.log(data)
+  .get().then( data => {
+      console.log(JSON.stringify(data, null, 4))
   })
 ```
 
@@ -33,25 +33,29 @@ weather
 
 ``` json
 {
-  "weather": {
-    "forecast": false,
-    "day": false,
-    "date": "2019-03-15T10:30:17.000Z",
-    "sunrise": "2019-03-15T06:14:23.000Z",
-    "sunset": "2019-03-15T18:03:57.000Z",
-    "temperature": 11.56,
-    "humidity": 87,
-    "wind_speed": 42.48,
-    "condition": "cloudy"
-  },
-  "text": {
-    "normal": "il fait fortement nuageux",
-    "simple": "fortement nuageux"
-  },
-  "icon": {
-    "path": "/root/userdir/node_modules/ttb-node-meteo-2/nodes/lib/icons/cloudy.png",
-    "name": "cloudy"
-  }
+    "weather": {
+        "forecast": false,
+        "day": false,
+        "date": "2019-03-15T15:30:17.000Z",
+        "sunrise": "2019-03-15T06:14:23.000Z",
+        "sunset": "2019-03-15T18:03:57.000Z",
+        "temperature": 10.8,
+        "temperature_unit": "celsius",
+        "humidity": 93,
+        "humidity_unit": "percent",
+        "wind_speed": 10.8,
+        "wind_speed_unit": "kilometer/hour",
+        "city": "Argentan",
+        "condition": "cloudy"
+    },
+    "text": {
+        "normal": "il fait fortement nuageux",
+        "simple": "fortement nuageux"
+    },
+    "icon": {
+        "path": "/root/userdir/node_modules/ttb-node-meteo-2/node_modules/ttb-weather/icons/cloudy.png",
+        "name": "cloudy"
+    }
 }
 ```
 
@@ -69,12 +73,12 @@ const apiKey = ""
 weather
   .setAPI({ key: apiKey})
   .setPosition({city:"Argentan", countryCode: 'fr'})
-  .setUnit(Weather.UNIT.CELSIUS)
+  .setTemperatureUnit(Weather.UNIT.TEMPERATURE.CELSIUS)
+  .setSpeedUnit(Weather.UNIT.SPEED.KMETER_HOUR)
   .setMode({ type: Weather.MODE.FORECAST, date: date, allDay: false, tz: "+01:00"})
   .setLang(Weather.LANG.EN)
-  .get()
-  .then( data => {
-    console.log(data)
+  .get().then( data => {
+      console.log(JSON.stringify(data, null, 4))
   })
 ```
 
@@ -82,22 +86,27 @@ weather
 
 ``` json
 {
-  "weather": {
-    "forecast": true,
-    "day": false,
-    "date": "2019-03-18T09:00:00.000Z",
-    "temperature": 7.02,
-    "humidity": 95,
-    "wind_speed": 15.73,
-    "condition": "rain_day"
-  },
-  "text": {
-    "normal": "there are light rain showers",
-    "simple": "light rain showers"
-  },
-  "icon": {
-    "path": "/root/userdir/node_modules/ttb-node-meteo-2/nodes/lib/icons/rain_day.png",
-    "name": "rain_day"
-  }
+    "weather": {
+        "forecast": true,
+        "day": false,
+        "date": "2019-03-18T09:00:00.000Z",
+        "temperature": 7.02,
+        "temperature_unit": "celsius",
+        "humidity": 95,
+        "humidity_unit": "percent",
+        "wind_speed": 4.37,
+        "wind_speed_unit": "kilometer/hour",
+        "city": "Argentan",
+        "condition": "rain_day"
+    },
+    "text": {
+        "normal": "there is rain",
+        "simple": "rain"
+    },
+    "icon": {
+        "path": "/root/userdir/node_modules/ttb-weather/icons/rain_day.png",
+        "name": "rain_day"
+    }
 }
+
 ```

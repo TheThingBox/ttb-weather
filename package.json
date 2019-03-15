@@ -1,6 +1,6 @@
 {
   "name": "ttb-weather",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A node module to retreive weather from the openweathermap.org APIs for TheThingBox.",
   "dependencies": {
     "axios": "0.18.0",

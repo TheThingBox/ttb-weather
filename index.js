@@ -39,7 +39,9 @@ var Weather = function(params = {}) {
     version: '2.5'
   })
   this.setMode(Weather.MODE.ACTUAL)
-  this.setUnit(Weather.UNIT.CELSIUS)
+  this.setUnit(Weather.UNIT.MODE.METRIC)
+  this.setTemperatureUnit(Weather.UNIT.TEMPERATURE.CELSIUS)
+  this.setSpeedUnit(Weather.UNIT.SPEED.KMETER_HOUR)
   this.setPosition({
     city: "Paris",
     countryCode: 'fr'
@@ -52,8 +54,14 @@ var Weather = function(params = {}) {
   if(params.mode){
     this.setMode(params.mode)
   }
-  if(params.unit){
-    this.setUnit(params.unit)
+  if(params.unit && params.unit.mode){
+    this.setUnit(params.unit.mode)
+  }
+  if(params.unit && params.unit.temperature){
+    this.setTemperatureUnit(params.unit.temperature)
+  }
+  if(params.unit && params.unit.speed){
+    this.setSpeedUnit(params.unit.speed)
   }
   if(params.position){
     this.setPosition(params.position)
@@ -132,8 +140,31 @@ Weather.prototype.setMode = function(params = {}){
 }
 
 Weather.prototype.setUnit = function(unit = ""){
-  if(Object.keys(Weather.UNIT).findIndex(u => Weather.UNIT[u] === unit) !== -1){
-    this.unit = unit
+  if(!this.unit){
+    this.unit = {}
+  }
+  if(Object.keys(Weather.UNIT.MODE).findIndex(u => Weather.UNIT.MODE[u] === unit) !== -1){
+    this.unit.node = unit
+  }
+  return this
+}
+
+Weather.prototype.setTemperatureUnit = function(unit = ""){
+  if(!this.unit){
+    this.unit = {}
+  }
+  if(Object.keys(Weather.UNIT.TEMPERATURE).findIndex(u => Weather.UNIT.TEMPERATURE[u] === unit) !== -1){
+    this.unit.temperature = unit
+  }
+  return this
+}
+
+Weather.prototype.setSpeedUnit = function(unit = ""){
+  if(!this.unit){
+    this.unit = {}
+  }
+  if(Object.keys(Weather.UNIT.SPEED).findIndex(u => Weather.UNIT.SPEED[u] === unit) !== -1){
+    this.unit.speed = unit
   }
   return this
 }
@@ -201,7 +232,7 @@ Weather.prototype.getRequest = function(){
       params: Object.assign(
         {
           appid: this.api.key,
-          units: this.unit
+          units: Weather.UNIT.MODE.METRIC
         },
         this.getQueryPosition()
       )
@@ -238,6 +269,7 @@ Weather.prototype.fetchRawData = function(){
         this.data[index].raw = resp.data
         this.data[index].date = Date.now()
         this.data[index].mode = Object.assign({}, this.mode)
+        this.data[index].unit = Object.assign({}, this.unit)
         this.data[index].api = Object.assign({}, this.api)
         resolve(index)
       } else {
@@ -273,8 +305,12 @@ Weather.prototype.retrieveWeatherFromRawData = function(index = null){
           day: this.data[index].mode.allDay === true,
           date: new Date(this.data[index].raw.list[hdataIndex].dt*1000),
           temperature: this.data[index].raw.list[hdataIndex].main.temp,
+          temperature_unit: this.data[index].unit.temperature,
           humidity: this.data[index].raw.list[hdataIndex].main.humidity,
-          wind_speed: Number((this.data[index].raw.list[hdataIndex].wind.speed*3.6).toFixed(2))
+          humidity_unit: 'percent',
+          wind_speed: this.data[index].raw.list[hdataIndex].wind.speed,
+          wind_speed_unit: this.data[index].unit.speed,
+          city: this.data[index].raw.city.name
         }
 
         this.data[index].weather.condition = Weather.transformOpenWeatherCodeToInternalCode(this.data[index].raw.list[hdataIndex].weather[0].id, this.data[index].raw.list[hdataIndex].weather[0].icon);
@@ -286,10 +322,44 @@ Weather.prototype.retrieveWeatherFromRawData = function(index = null){
           sunrise: new Date(this.data[index].raw.sys.sunrise*1000),
           sunset: new Date(this.data[index].raw.sys.sunset*1000),
           temperature: this.data[index].raw.main.temp,
+          temperature_unit: this.data[index].unit.temperature,
           humidity: this.data[index].raw.main.humidity,
-          wind_speed: (this.data[index].raw.wind.speed*3.6).toFixed(2)
+          humidity_unit: 'percent',
+          wind_speed: this.data[index].raw.wind.speed,
+          wind_speed_unit: this.data[index].unit.speed,
+          city: this.data[index].raw.name
         };
 
+        var _wind_speed = this.data[index].weather.wind_speed
+        var _temperature = this.data[index].weather.wind_speed
+
+        switch(this.data[index].unit.mode){
+          case Weather.UNIT.MODE.METRIC: // celsius && meter/sec
+            if(this.data[index].unit.temperature===Weather.UNIT.TEMPERATURE.FAHRENHEIT){
+              _temperature = Weather.conversion.temperature.celsiusToFahrenheit(_temperature)
+            }
+            if(this.data[index].unit.speed===Weather.UNIT.SPEED.MILES_HOUR){
+              _wind_speed =  Weather.conversion.speed.meterSecondToMilesHour(_wind_speed)
+            } else if(this.data[index].unit.speed===Weather.UNIT.SPEED.KMETER_HOUR){
+              _wind_speed =  Weather.conversion.speed.meterSecondToKilometerHour(_wind_speed)
+            }
+            break
+          case Weather.UNIT.MODE.IMPERIAL: // fahrenheit && miles/hour
+            if(this.data[index].unit.temperature===Weather.UNIT.TEMPERATURE.CELSIUS){
+              _temperature = Weather.conversion.temperature.FahrenheitToCelsius(_temperature)
+            }
+
+            if(this.data[index].unit.speed===Weather.UNIT.SPEED.METER_SECOND){
+              _wind_speed =  Weather.conversion.speed.milesHourToMeterSecond(_wind_speed)
+            } else if(this.data[index].unit.speed===Weather.UNIT.SPEED.KMETER_HOUR){
+              _wind_speed =  Weather.conversion.speed.milesHourToMeterSecond(_wind_speed)
+              _wind_speed =  Weather.conversion.speed.meterSecondToKilometerHour(_wind_speed)
+            }
+            break
+        }
+
+        this.data[index].weather.temperature = Number(_temperature.toFixed(2))
+        this.data[index].weather.wind_speed = Number(_wind_speed.toFixed(2))
         this.data[index].weather.condition = Weather.transformOpenWeatherCodeToInternalCode(this.data[index].raw.weather[0].id, this.data[index].raw.weather[0].icon);
       }
       resolve()
@@ -412,6 +482,31 @@ Weather.transformOpenWeatherCodeToInternalCode = function(x, icon) {
     }
 }
 
+Weather.conversion = {
+  temperature: {
+    celsiusToFahrenheit: function(temp){
+      return temp * 9 / 5 + 32
+    },
+    FahrenheitToCelsius: function(temp){
+      return (temp - 32) * 5 / 9
+    }
+  },
+  speed: {
+    milesHourToMeterSecond: function(speed){
+      return speed*0.44704
+    },
+    meterSecondToMilesHour: function(speed){
+      return speed/0.44704
+    },
+    meterSecondToKilometerHour: function(speed){
+      return speed*3.6
+    },
+    kilometerHourToMeterSecond: function(speed){
+      return speed/3.6
+    }
+  }
+}
+
 Weather.MODE = {
   ACTUAL: 'weather',
   WEATHER: 'weather',
@@ -420,12 +515,25 @@ Weather.MODE = {
 }
 
 Weather.UNIT = {
-  C: 'metric',
-  CELSIUS: 'metric',
-  METRIC: 'metric',
-  F: 'imperial',
-  FAHRENHEIT: 'imperial',
-  IMPERIAL: 'imperial'
+  MODE: {
+    METRIC: 'metric',
+    IMPERIAL: 'imperial'
+  },
+  TEMPERATURE: {
+    C: 'celsius',
+    CELSIUS: 'celsius',
+    METRIC: 'celsius',
+    F: 'fahrenheit',
+    FAHRENHEIT: 'fahrenheit',
+    IMPERIAL: 'fahrenheit'
+  },
+  SPEED: {
+    METRIC: 'meter/sec',
+    METER_SECOND: 'meter/sec',
+    IMPERIAL: 'miles/hour',
+    MILES_HOUR: 'miles/hour',
+    KMETER_HOUR: 'kilometer/hour'
+  }
 }
 
 Weather.LANG = {
