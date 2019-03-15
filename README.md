@@ -53,7 +53,7 @@ weather
         "simple": "fortement nuageux"
     },
     "icon": {
-        "path": "/root/userdir/node_modules/ttb-node-meteo-2/node_modules/ttb-weather/icons/cloudy.png",
+        "path": "/root/userdir/node_modules/ttb-weather/icons/cloudy.png",
         "name": "cloudy"
     }
 }
