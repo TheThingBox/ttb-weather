@@ -106,5 +106,12 @@
       "weather": "[0]rain and snow mixed|",
       "prefix_keys": "[0]there_is_2|"
     }
-  }
+  },
+  "at": "At",
+  "hour": ":",
+  "temperature": {
+    "is": "the temperature is",
+    "will": "the temperature will be"
+  },
+  "days": "[0]sunday|[1]monday|[2]tuesday|[3]wednesday|[4]thursday|[5]friday|[6]saturday|[10]today|[11]tomorrow|"
 }

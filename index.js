@@ -375,6 +375,31 @@ Weather.prototype.retrieveTextAndIconFromWeather = function(index = null){
   }
   this.data[index].icon = this.weatherConditionToIcon(this.data[index].weather.condition)
   this.data[index].text = this.weatherConditionToText(this.data[index].weather.condition)
+  const _place = `${this.i18n.translate('at')} ${this.data[index].weather.city}`
+  const _temperature = `${this.data[index].weather.temperature} ${this.data[index].weather.temperature_unit==='celsius'?'°C':'°F'}`
+  let _prefix = ""
+  let _text = ""
+  if(this.data[index].mode.type===Weather.MODE.WEATHER){
+    _prefix = `${this.i18n.translate('temperature.is')}`
+    _text = this.data[index].text.normal
+  } else {
+    let daydiff = this.data[index].weather.date.getDate() - (new Date()).getDate()
+    let day
+    if(daydiff === 0){
+      day = 10
+    } else if(daydiff ===  1){
+      day = 11
+    } else {
+      day = this.data[index].weather.date.getDay()
+    }
+    _prefix = this.i18n.synonym('days', day)
+    if(this.data[index].weather.day === false){
+      _prefix = `${_prefix} ${this.i18n.translate('at').toLowerCase()} ${moment(this.data[index].weather.date).utcOffset(this.data[index].mode.tz).get('hours')}${this.i18n.translate('hour')}00`
+    }
+    _prefix = `${_prefix}, ${this.i18n.translate('temperature.will')}`
+    _text = this.data[index].text.simple
+  }
+  this.data[index].text.advanced = `${_place} : ${_prefix} ${_temperature}, ${_text}`
 }
 
 Weather.prototype.weatherConditionToIcon = function(condition){

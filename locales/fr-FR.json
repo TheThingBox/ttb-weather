@@ -101,5 +101,12 @@
       "weather": "[0]pluie et neige mêlée|",
       "prefix_keys": "[0]there_is_3|"
     }
-  }
+  },
+  "at": "À",
+  "hour": "h",
+  "temperature": {
+    "is": "la température est de",
+    "will": "la température sera de"
+  },
+  "days": "[0]dimanche|[1]lundi|[2]mardi|[3]mercredi|[4]jeudi|[5]vendredi|[6]samedi|[10]aujourd'hui|[11]demain|"
 }
