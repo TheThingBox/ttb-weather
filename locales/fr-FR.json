@@ -1,0 +1,105 @@
+{
+  "lang": "français",
+  "prefixs": {
+    "none": {
+      "length": "1",
+      "prefix": "[0]|"
+    },
+    "it_is": {
+      "length": "3",
+      "prefix": "[0]c'est|[1,2]il fait|"
+    },
+    "there_are": {
+      "length": "1",
+      "prefix": "[0]il y a des|"
+    },
+    "there_are_2": {
+      "length": "1",
+      "prefix": "[0]il y a de|"
+    },
+    "there_is": {
+      "length": "1",
+      "prefix": "[0]il y a du|"
+    },
+    "there_is_2": {
+      "length": "1",
+      "prefix": "[0]il y a de l'|"
+    },
+    "there_is_3": {
+      "length": "1",
+      "prefix": "[0]il y a de la|"
+    }
+  },
+  "weathers": {
+    "sunny": {
+      "length": "1",
+      "weather": "[0]ensoleillé|",
+      "prefix_keys": "[0]it_is|"
+    },
+    "night": {
+      "length": "1",
+      "weather": "[0]nuit claire|",
+      "prefix_keys": "[0]it_is|"
+    },
+    "cloudy_day": {
+      "length": "4",
+      "weather": "[0]éclaircies|[1]faiblement nuageux|[2]faibles passages nuageux|[3]le ciel est voilé|",
+      "prefix_keys": "[0]there_are|[1]it_is|[2]there_are_2|[3]none|"
+    },
+    "cloudy_night": {
+      "length": "3",
+      "weather": "[0]la nuit est légèrement voilée|[1]nuit avec développement nuageux|[2]la nuit est bien dégagée|",
+      "prefix_keys": "[0]none|[1]it_is|[2]none|"
+    },
+    "fog": {
+      "length": "1",
+      "weather": "[0]brouillard|",
+      "prefix_keys": "[0]there_is|"
+    },
+    "cloudy": {
+      "length": "2",
+      "weather": "[0]fortement nuageux|[1]la nuit est nuageuse|",
+      "prefix_keys": "[0]it_is|[1]none|"
+    },
+    "rain_night": {
+      "length": "2",
+      "weather": "[0]pluie|[1]nuit avec averses|",
+      "prefix_keys": "[0]there_is_3|[1]it_is|"
+    },
+    "rain_day": {
+      "length": "3",
+      "weather": "[0]pluie|[1]averses de pluie faible|[2]averses de pluie modérée|",
+      "prefix_keys": "[0]there_is_3|[1]there_are|[2]there_are|"
+    },
+    "rain": {
+      "length": "2",
+      "weather": "[0]averses|[1]pluie forte|",
+      "prefix_keys": "[0]there_are|[1]there_is_3|"
+    },
+    "thunderstorm": {
+      "length": "1",
+      "weather": "[0]orage|",
+      "prefix_keys": "[0]there_is_2|"
+    },
+    "snow_night": {
+      "length": "2",
+      "weather": "[0]neige faible|[1]neige|",
+      "prefix_keys": "[0]there_is_3|[1]there_is_3|"
+    },
+    "snow_day": {
+      "length": "2",
+      "weather": "[0]neige faible|[1]neige|",
+      "prefix_keys": "[0]there_is_3|[1]there_is_3|"
+    },
+    "snow": {
+      "length": "3",
+      "weather": "[0]neige|[1]neige modérée|[2]neige forte|",
+      "prefix_keys": "[0]there_is_3|[1]there_is_3|[2]there_is_3|"
+    },
+    "meltedsnow": {
+      "length": "1",
+      "weather": "[0]pluie et neige mêlée|",
+      "prefix_keys": "[0]there_is_3|"
+    }
+  }
+}
