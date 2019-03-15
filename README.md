@@ -1,8 +1,8 @@
 [![License](https://img.shields.io/badge/license-WTFPL-blue.svg)](http://www.wtfpl.net/)
-![GitHub issues](https://img.shields.io/github/issues-raw/thethingbox/ttb-waether.svg)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/thethingbox/ttb-waether.svg)
+![GitHub issues](https://img.shields.io/github/issues-raw/thethingbox/ttb-weather.svg)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/thethingbox/ttb-weather.svg)
 
-# ttb-waether
+# ttb-weather
 
 A node module to retreive weather from the openweathermap.org APIs for TheThingBox.
 
