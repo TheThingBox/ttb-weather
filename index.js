@@ -1,5 +1,5 @@
 const axios = require('axios')
-const moment = require('moment')
+const moment = require('moment-timezone')
 const i18n = require('i18n')
 const path = require('path')
 const fs = require('fs')
