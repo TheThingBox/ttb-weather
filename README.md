@@ -15,8 +15,10 @@ A node module to retreive weather from the openweathermap.org APIs for TheThingB
 const Weather = require('ttb-weather')
 const weather = new Weather()
 
+const apiKey = ""
+
 weather
-  .setAPI({ key: "45bbf485e06dfa30c7d7138030f25ed6"})
+  .setAPI({ key: apiKey})
   .setPosition({city:"Argentan", countryCode: 'fr'})
   .setUnit(Weather.UNIT.CELSIUS)
   .setMode(Weather.MODE.WEATHER)
@@ -62,7 +64,10 @@ let date = new Date()
 date.setDate(date.getDate()+3)
 date.setHours(10)
 
-weather.setAPI({ key: "45bbf485e06dfa30c7d7138030f25ed6"})
+const apiKey = ""
+
+weather
+  .setAPI({ key: apiKey})
   .setPosition({city:"Argentan", countryCode: 'fr'})
   .setUnit(Weather.UNIT.CELSIUS)
   .setMode({ type: Weather.MODE.FORECAST, date: date, allDay: false, tz: "+01:00"})
