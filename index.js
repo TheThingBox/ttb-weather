@@ -331,7 +331,7 @@ Weather.prototype.retrieveWeatherFromRawData = function(index = null){
         };
 
         var _wind_speed = this.data[index].weather.wind_speed
-        var _temperature = this.data[index].weather.wind_speed
+        var _temperature = this.data[index].weather.temperature
 
         switch(this.data[index].unit.mode){
           case Weather.UNIT.MODE.METRIC: // celsius && meter/sec
@@ -376,7 +376,7 @@ Weather.prototype.retrieveTextAndIconFromWeather = function(index = null){
   this.data[index].icon = this.weatherConditionToIcon(this.data[index].weather.condition)
   this.data[index].text = this.weatherConditionToText(this.data[index].weather.condition)
   const _place = `${this.i18n.translate('at')} ${this.data[index].weather.city}`
-  const _temperature = `${this.data[index].weather.temperature} ${this.data[index].weather.temperature_unit==='celsius'?'°C':'°F'}`
+  const _temperature = `${this.data[index].weather.temperature} ${this.data[index].weather.temperature_unit==='celsius'?'Â°C':'Â°F'}`
   let _prefix = ""
   let _text = ""
   if(this.data[index].mode.type===Weather.MODE.WEATHER){
